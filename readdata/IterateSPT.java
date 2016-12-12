@@ -20,7 +20,8 @@ public class IterateSPT {
         ReadSPT spt_data = new ReadSPT(file.getPath());
         String[] file_data = spt_data.OpenFile();
         DataSPT dataSPT = new DataSPT(file_data);
-        System.out.println(dataSPT.Battery);
+        //System.out.println(dataSPT.Battery);
+        storeSPT.writeRecord(dataSPT);
       } 
       
     };

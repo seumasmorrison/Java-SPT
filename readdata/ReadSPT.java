@@ -28,9 +28,7 @@ public class ReadSPT{
        } 
     System.out.println(Arrays.toString(lines));
     
-    int num_data_records = 12;
-    String[] spt_data = new String[num_data_records];
-    return spt_data;
+    return lines;
     }
     
   }

@@ -1,6 +1,8 @@
 package readdata;
 import java.sql.*;
 import java.util.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class StoreSPT{
   
@@ -9,33 +11,46 @@ public class StoreSPT{
   String password = "";
   Connection connection = null; 
   Statement stmt=null;
-  
-  
-  
+ 
   public StoreSPT(){
     try {
-   System.out.println("Loading JDBC driver...");
-   Class.forName("com.mysql.jdbc.Driver");
-   System.out.println("JDBC driver successfully loaded!");
-   connection = DriverManager.getConnection(url, username, password);
+      System.out.println("Loading JDBC driver...");
+      Class.forName("com.mysql.jdbc.Driver");
+      System.out.println("JDBC driver successfully loaded!");
+      connection = DriverManager.getConnection(url, username, password);
+      //query = "insert into spt values("")";
   
-  } catch (ClassNotFoundException e) {
-   throw new RuntimeException(e);
-  } catch (SQLException e) {
-   System.out.println(e.toString());
-  }
-  }
-  
-  public void writeRecord(DataSPT record_data){
-    try {
-   stmt = connection.createStatement();
-  
-   String sql = "INSERT INTO spt (date_time, Hs, Tz, Battery)" +
-     "VALUES (1222,122.222,12.222,5)";
-   stmt.executeUpdate(sql);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     } catch (SQLException e) {
-   System.out.println(e.toString());
+      System.out.println(e.toString());
+    }
   }
   
-}
+  public void writeRecord(DataSPT dataSPT){
+    try {
+      stmt = connection.createStatement();
+      System.out.println(dataSPT.datetime);
+      SimpleDateFormat date_formater = new SimpleDateFormat("yyyy-MM-dd'T'hh'h'mm");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+      java.util.Date date_time = null;
+      try {
+        date_time = date_formater.parse(dataSPT.datetime);
+      } catch (java.text.ParseException e) {
+        System.out.println(e.toString());
+      }
+      System.out.println(date_time);
+      String sql = "INSERT INTO spt (date_time, Hs, Tz, Battery)" +
+        " VALUES (" + sdf.format(date_time) + ", "  + dataSPT.hs + ", " + dataSPT.tz + ", " + dataSPT.battery + ")";
+      System.out.println(sql);
+      stmt.executeUpdate(sql);
+    } catch (SQLException e) {
+      System.out.println(e.toString());
+    }
+  }
+
+  
+  
+  
 }
